@@ -1,0 +1,55 @@
+# It goes like this:
+# machine name | color of box | location | event | other parts found?
+# machine name is thus: hydra, dragoon
+# color of box is thus: none (for unknown), red, green, blue
+# locations are thus: coral, houses, downtown, levels, volcano,
+# forest, golf, cityhall, underhouses, undervolcano, undercity,
+# skyplatform
+# events are thus: none, boxes, dynablade, fog, pillar, lighthouse
+# fakeitems, burning, meteors, bouncy, tac, ufo, zooming, cityhallchamber
+# restorationspot
+# other parts found? is thus: yes, no | and applies only to whether or not
+# I had parts of the same machine when I got the new part
+
+hydra | red | cityhall | boxes | no
+hydra | red | golf | none | yes
+dragoon | red | undervolcano | none | no
+dragoon | red | undercity | none | yes
+dragoon | red | undercity | none | no
+dragoon | red | levels | none | yes
+dragoon | red | cityhall | none | yes
+dragoon | red | levels | none | no
+dragoon | none | golf | none | yes
+dragoon | red | underforest | tac | yes
+hydra | red | levels | lighthouse | no
+hydra | red | cityhall | none | yes
+hydra | red | levels | none | yes
+dragoon | red | coral | none | no
+dragoon | red | cityhall | none | yes
+dragoon | red | houses | none | yes
+dragoon | red | underforest | none | no
+dragoon | red | underforest | none | yes
+dragoon | red | houses | none | yes
+dragoon | red | coral | bouncy | no
+dragoon | red | houses | none | yes
+dragoon | red | cityhall | none | yes
+hydra | red | coral | bouncy | no
+hydra | none | levels | none | yes
+dragoon | red | coral | none | no
+dragoon | red | houses | none | yes
+dragoon | red | golf | none | no
+hydra | red | levels | burning | no
+hydra | red | houses | none | yes
+hydra | red | undervolcano | none | yes
+dragoon | red | underforest | none | no
+dragoon | red | houses | none | no
+dragoon | red | levels | none | yes
+dragoon | red | golf | lighthouse | no
+dragoon | red | golf | lighthouse | no
+dragoon | red | undercity | none | yes
+hydra | red | coral | none | no
+hydra | red | coral | none | yes
+hydra | red | golf | cityhallchamber | yes
+dragoon | red | houses | none | no
+dragoon | red | houses | none | yes
+dragoon | red | undercity | none | yes
