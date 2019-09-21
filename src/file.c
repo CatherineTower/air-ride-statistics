@@ -5,98 +5,29 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define isEmpty(string) ((*string) == '\n' || (*string) == '\0')
+#include "file.h"
+
 #define eprintf(fmt, ...) fprintf(stderr, fmt, __VA_ARGS__)
 
-#define LINE_LENGTH 256
-#define SEPARATOR '|'
+static void removeComment(char const *string);
+static void removeNewline(char const *string);
+static int DataPointFromString(DataPoint *data, char *string);
+static void reallocateDataPoints(DataPoints *points);
+static char *isolateToken(char *string);
+static int readMachineType(DataPoint *data, char const *token);
+static int readBoxColor(DataPoint *data, char const *token);
+static int readLocation(DataPoint *data, char const *token);
+static int readEvent(DataPoint *data, char const *token);
+static int readOtherPartsFound(DataPoint *data, char const *token);
 
-typedef enum MachineName {
-  dragoon,
-  hydra
-} MachineName;
-
-typedef enum BoxColor {
-  red,
-  green,
-  blue,
-  unknownColor
-} BoxColor;
-
-typedef enum Location {
-  coral,
-  houses,
-  downtown,
-  levels,
-  volcano,
-  forest,
-  golf,
-  cityhall,
-  underhouses,
-  undervolcano,
-  undercity,
-  skyplatform
-} Location;
-
-typedef enum Event {
-  noEvent,
-  boxes,
-  dynablade,
-  fog,
-  pillar,
-  lighthouse,
-  fakeitems,
-  burning,
-  meteors,
-  bouncy,
-  tac,
-  ufo,
-  zooming,
-  cityhallchamber,
-  restorationspot
-} Event;
-
-typedef struct DataPoint {
-  MachineName name;
-  BoxColor color;
-  Location location;
-  Event event;
-  bool hadParts;
-} DataPoint;
-
-typedef struct DataPoints {
-  size_t size;
-  size_t numberUsed;
-  DataPoint *data;
-} DataPoints;
-
-typedef struct DataFile {
-  FILE *file;
-  char const *filename;
-  size_t lineNumber;
-} DataFile;
-
-void removeComment(char const *string);
-void removeNewline(char const *string);
-int openDataFile(DataFile *file, char const *filename);
-DataPoints readDataFile(DataFile *file);
-void reallocateDataPoints(DataPoints *points);
-int DataPointFromString(DataPoint *data, char *string);
-char *isolateToken(char *string);
-int readMachineType(DataPoint *data, char const *token);
-int readBoxColor(DataPoint *data, char const *token);
-int readLocation(DataPoint *data, char const *token);
-int readEvent(DataPoint *data, char const *token);
-int readOtherPartsFound(DataPoint *data, char const *token);
-
-void removeComment(char const *string) {
+static void removeComment(char const *string) {
   char *ch = strchr(string, '#');
   if(ch) {
     *ch = '\0';
   }
 }
 
-void removeNewline(char const *string) {
+static void removeNewline(char const *string) {
   char *ch = strchr(string, '\n');
   if(ch) {
     *ch = '\0';
@@ -152,7 +83,7 @@ DataPoints readDataFile(DataFile *file) {
   return res;
 }
 
-void reallocateDataPoints(DataPoints *points) {
+static void reallocateDataPoints(DataPoints *points) {
   points->data = realloc(points->data, sizeof(DataPoint) * points->size * 2);
   assert(points->data != NULL);
 
@@ -164,7 +95,7 @@ void reallocateDataPoints(DataPoints *points) {
 
 
 /* This will mangle the string, heads up */
-int DataPointFromString(DataPoint *data, char *string) {
+static int DataPointFromString(DataPoint *data, char *string) {
   /* Get machine type */
   char *nextField = strchr(string, SEPARATOR);
   if(nextField == NULL) {
@@ -232,7 +163,7 @@ int DataPointFromString(DataPoint *data, char *string) {
   return 0;
 }
 
-char *isolateToken(char *string) {
+static char *isolateToken(char *string) {
   char *beginningOfToken = string;
   while(isspace(*beginningOfToken)) {
     beginningOfToken++;
@@ -248,7 +179,7 @@ char *isolateToken(char *string) {
 
 
 
-int readMachineType(DataPoint *data, char const *token) {
+static int readMachineType(DataPoint *data, char const *token) {
   if(!strcasecmp(token, "dragoon")) {
     data->name = dragoon;
   } else if(!strcasecmp(token, "hydra")) {
@@ -259,7 +190,7 @@ int readMachineType(DataPoint *data, char const *token) {
   return 0;
 }
 
-int readBoxColor(DataPoint *data, char const *token) {
+static int readBoxColor(DataPoint *data, char const *token) {
   if(!strcasecmp(token, "red")) {
     data->color = red;
   } else if(!strcasecmp(token, "green")) {
@@ -274,7 +205,7 @@ int readBoxColor(DataPoint *data, char const *token) {
   return 0;
 }
 
-int readLocation(DataPoint *data, char const *token) {
+static int readLocation(DataPoint *data, char const *token) {
   if(!strcasecmp(token, "coral")) {
     data->location = coral;
   } else if(!strcasecmp(token, "houses")) {
@@ -305,7 +236,7 @@ int readLocation(DataPoint *data, char const *token) {
   return 0;
 }
 
-int readEvent(DataPoint *data, char const *token) {
+static int readEvent(DataPoint *data, char const *token) {
   if(!strcasecmp(token, "none")) {
     data->event = noEvent;
   } else if(!strcasecmp(token, "boxes")) {
@@ -342,7 +273,7 @@ int readEvent(DataPoint *data, char const *token) {
   return 0;
 }
 
-int readOtherPartsFound(DataPoint *data, char const *token) {
+static int readOtherPartsFound(DataPoint *data, char const *token) {
   if(!strcasecmp(token, "no")) {
     data->hadParts = false;
   } else if(!strcasecmp(token, "yes")) {
