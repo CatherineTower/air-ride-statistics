@@ -313,7 +313,7 @@ int main(void) {
   free(testString);
 
   DataFile file = {};
-  assert(openDataFile(&file, "/home/storage/src/air-ride-statistics/data/specialParts") == 0);
+  assert(openDataFile(&file, "../data/specialParts") == 0);
   DataPoints points = readDataFile(&file);
   closeDataFile(&file);
 
