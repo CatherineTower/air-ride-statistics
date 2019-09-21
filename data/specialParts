@@ -53,3 +53,7 @@ hydra | red | golf | cityhallchamber | yes
 dragoon | red | houses | none | no
 dragoon | red | houses | none | yes
 dragoon | red | undercity | none | yes
+dragoon | red | levels | none | no
+dragoon | red | levels | none | yes
+hydra | red | cityhall | none | no
+hydra | red | levels | none | no
