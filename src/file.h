@@ -11,12 +11,24 @@ typedef enum MachineName {
   hydra
 } MachineName;
 
+char const *machineNameStrings[] = {
+  "Dragoon",
+  "Hydra"
+};
+
 typedef enum BoxColor {
   red,
   green,
   blue,
   unknownColor
 } BoxColor;
+
+char const *boxColorStrings[] = {
+  "Red",
+  "Green",
+  "Blue",
+  "Unknown color"
+};
 
 typedef enum Location {
   coral,
@@ -27,11 +39,26 @@ typedef enum Location {
   forest,
   golf,
   cityhall,
-  underhouses,
   undervolcano,
   undercity,
+  underforest,
   skyplatform
 } Location;
+
+char const *locationStrings[] = {
+  "Coral",
+  "Dilapidated Houses",
+  "Downtown",
+  "Parking Garage",
+  "Volcano",
+  "Forest",
+  "Golf Course",
+  "City Hall",
+  "Under the Volcano",
+  "Under the City",
+  "Under the Forest",
+  "Sky Platform"
+};
 
 typedef enum Event {
   noEvent,
@@ -50,6 +77,24 @@ typedef enum Event {
   cityhallchamber,
   restorationspot
 } Event;
+
+char const *eventStrings[] = {
+  "No event",
+  "All items are the same",
+  "Dyna Blade is attacking",
+  "A dense fog covers the city",
+  "A huge pillar has appeared",
+  "The lighthouse has turned on",
+  "Some items are fakes",
+  "The rail stations are burning",
+  "Meteors are falling on the city",
+  "Items are bouncy",
+  "Tac stole items and is hiding",
+  "A UFO has appeared",
+  "Star fuel tanks are out of control",
+  "City Hall's secret chamber has opened",
+  "Restoration spots have appeared"
+};
 
 typedef struct DataPoint {
   MachineName name;
@@ -73,5 +118,7 @@ typedef struct DataFile {
 
 int openDataFile(DataFile *file, char const *filename);
 DataPoints readDataFile(DataFile *file);
+void closeDataFile(DataFile *file);
+void freeDataPoints(DataPoints *points);
 
 #endif  /* FILE_H */

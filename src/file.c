@@ -83,6 +83,12 @@ DataPoints readDataFile(DataFile *file) {
   return res;
 }
 
+void closeDataFile(DataFile *file) {
+  assert(file != NULL);
+  fclose(file->file);
+  free((char *) file->filename);
+}
+
 static void reallocateDataPoints(DataPoints *points) {
   points->data = realloc(points->data, sizeof(DataPoint) * points->size * 2);
   assert(points->data != NULL);
@@ -93,6 +99,10 @@ static void reallocateDataPoints(DataPoints *points) {
   points->size *= 2;
 }
 
+void freeDataPoints(DataPoints *points) {
+  assert(points != NULL);
+  free(points->data);
+}
 
 /* This will mangle the string, heads up */
 static int DataPointFromString(DataPoint *data, char *string) {
@@ -222,12 +232,12 @@ static int readLocation(DataPoint *data, char const *token) {
     data->location = golf;
   } else if(!strcasecmp(token, "cityhall")) {
     data->location = cityhall;
-  } else if(!strcasecmp(token, "underhouses")) {
-    data->location = underhouses;
   } else if(!strcasecmp(token, "undervolcano")) {
     data->location = undervolcano;
   } else if(!strcasecmp(token, "undercity")) {
     data->location = undercity;
+  } else if(!strcasecmp(token, "underforest")) {
+    data->location = underforest;
   } else if(!strcasecmp(token, "skyplatform")) {
     data->location = skyplatform;
   } else {
@@ -298,6 +308,23 @@ int main(void) {
   assert(test.hadParts == false);
 
   free(testString);
+
+  DataFile file = {};
+  assert(openDataFile(&file, "/home/storage/src/air-ride-statistics/data/specialParts") == 0);
+  DataPoints points = readDataFile(&file);
+  closeDataFile(&file);
+
+  size_t locations[12] = {};
+  for(size_t i = 0; i < points.numberUsed; i++) {
+    locations[points.data[i].location]++;
+  }
+  printf("\n");
+
+  for(size_t i = 0; i < 12; i++) {
+    printf("%s: %lu\n", locationStrings[i], locations[i]);
+  }
+
+  freeDataPoints(&points);
   return 0;
 }
 
