@@ -7,7 +7,10 @@
 
 #include "file.h"
 
+#define isEmpty(string) ((*string) == '\n' || (*string) == '\0')
 #define eprintf(fmt, ...) fprintf(stderr, fmt, __VA_ARGS__)
+
+#define LINE_LENGTH 256
 
 static void removeComment(char const *string);
 static void removeNewline(char const *string);

@@ -1,9 +1,6 @@
 #ifndef FILE_H
 #define FILE_H
 
-#define isEmpty(string) ((*string) == '\n' || (*string) == '\0')
-
-#define LINE_LENGTH 256
 #define SEPARATOR '|'
 
 typedef enum MachineName {
@@ -96,6 +93,8 @@ char const *eventStrings[] = {
   "Restoration spots have appeared"
 };
 
+/* This is to hold the collected data. It takes up very little space,
+   not more than a few bytes */
 typedef struct DataPoint {
   MachineName name;
   BoxColor color;
@@ -104,19 +103,30 @@ typedef struct DataPoint {
   bool hadParts;
 } DataPoint;
 
+/* A simple structure to hold all of the collected data. This is used
+   to minimize the need for dynamic allocation */
 typedef struct DataPoints {
   size_t size;
   size_t numberUsed;
   DataPoint *data;
 } DataPoints;
 
+/* Mostly this is just for error reporting */
 typedef struct DataFile {
   FILE *file;
   char const *filename;
   size_t lineNumber;
 } DataFile;
 
+/* These functions all take a pointer to the struct it initializes. I
+   don't want to constrain users to dynamic allocation. glibc does
+   the same thing for a lot of its functions and I think that's neat. */
+
+/* Opens the file and sets up the DataFile structure */
 int openDataFile(DataFile *file, char const *filename);
+
+/* Reads the entire file into an in-memory data structure. Will
+   report errors on stderr */
 DataPoints readDataFile(DataFile *file);
 void closeDataFile(DataFile *file);
 void freeDataPoints(DataPoints *points);
