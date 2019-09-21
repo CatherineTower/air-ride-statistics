@@ -295,7 +295,7 @@ static int readOtherPartsFound(DataPoint *data, char const *token) {
 }
 
 /* I'm gonna throw in a unit test here */
-#ifdef UNITTEST
+#ifdef UNITTEST_FILE
 
 int main(void) {
   DataPoint test = {};
@@ -328,4 +328,4 @@ int main(void) {
   return 0;
 }
 
-#endif  /* !UNITTEST */
+#endif  /* !UNITTEST_FILE */
